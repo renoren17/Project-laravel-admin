@@ -67,18 +67,20 @@
                         <h3 class="card-title"><i class="fas fa-users"></i> Daftar Pengguna</h3>
                     </div>
                     <div class="col-12 col-md-8">
-                        <div class="d-flex flex-wrap justify-content-md-end gap-2">
-                            <div class="input-group input-group-sm" style="width: 200px;">
-                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <div class="d-flex flex-wrap justify-content-md-end">
+                            <div class="input-group input-group-sm mr-3 mb-2" style="width: 200px;">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                </div>
                                 <input type="search" id="user-search" class="form-control" placeholder="Cari pengguna">
                             </div>
-                            <select id="user-role-filter" class="form-select form-select-sm" style="width: 160px;">
+                            <select id="user-role-filter" class="form-control form-control-sm mr-3 mb-2" style="width: 160px;">
                                 <option value="all" selected>Semua Role</option>
                                 <option value="admin">Admin</option>
                                 <option value="guru">Guru</option>
                                 <option value="staff">Staff TU</option>
                             </select>
-                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-add-user">
+                            <button type="button" class="btn btn-sm btn-primary mb-2" data-toggle="modal" data-target="#modal-add-user">
                                 <i class="fas fa-user-plus mr-1"></i> Tambah Pengguna
                             </button>
                         </div>
