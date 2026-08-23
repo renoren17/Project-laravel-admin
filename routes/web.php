@@ -36,3 +36,8 @@ Route::get('/dashboard', function () {
 Route::get('/users', function () {
     return view('users');
 });
+
+//faq punya Wildan
+Route::get('/faq', function () {
+    return view('faq');
+});

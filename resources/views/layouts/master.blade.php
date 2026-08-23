@@ -72,6 +72,12 @@
             <p>Pengguna</p>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="{{ url('/faq') }}" class="nav-link {{ request()->is('faq') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-question-circle"></i>
+            <p>FAQ</p>
+        </a>
+    </li>
 </ul>
             </nav>
         </div>
