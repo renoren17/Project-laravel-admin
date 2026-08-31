@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CastController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,3 +42,7 @@ Route::get('/users', function () {
 Route::get('/faq', function () {
     return view('faq');
 });
+
+Route::get('/cast', [CastController::class, 'index'])->name('cast.index');
+Route::get('/cast/create', [CastController::class, 'create'])->name('cast.create');
+Route::post('/cast', [CastController::class, 'store'])->name('cast.store');
