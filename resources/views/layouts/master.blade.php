@@ -41,13 +41,21 @@
             <!-- Sidebar Menu -->
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <li class="nav-item">
-        <a href="{{ route('cast.index') }}" class="nav-link {{ request()->is('cast*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa-user-tie"></i>
-            <p>Cast</p>
-        </a>
-    </li>
-</ul>
+                    <li class="nav-item">
+                        <a href="{{ route('cast.index') }}" class="nav-link {{ request()->is('cast*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-tie"></i>
+                            <p>Cast</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="{{ route('genre.index') }}" class="nav-link {{ request()->is('genre*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-film"></i>
+                            <p>Genre</p>
+                        </a>
+                    </li>
+                </ul>
             </nav>
         </div>
     </aside>
