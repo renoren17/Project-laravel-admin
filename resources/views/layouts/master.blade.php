@@ -28,7 +28,7 @@
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <a href="#" class="brand-link">
+        <a href="{{ route('dashboard') }}" class="brand-link">
             <span class="brand-text font-weight-light">Dashboard Film</span>
         </a>
 
@@ -41,7 +41,15 @@
             <!-- Sidebar Menu -->
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <!-- Menu Film (BARU) -->
+                    <!-- Menu Dashboard -->
+                    <li class="nav-item">
+                        <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+
+                    <!-- Menu Film -->
                     <li class="nav-item">
                         <a href="{{ route('film.index') }}" class="nav-link {{ request()->is('film*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-video"></i>
@@ -71,6 +79,17 @@
                             <i class="nav-icon fas fa-user"></i>
                             <p>Profiles</p>
                         </a>
+                    </li>
+
+                    <!-- Menu Logout -->
+                    <li class="nav-item">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="nav-link border-0 bg-transparent w-100 text-left text-white">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>Logout</p>
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </nav>
