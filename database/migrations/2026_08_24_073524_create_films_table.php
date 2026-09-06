@@ -20,7 +20,7 @@ return new class extends Migration
 
             // Foreign Key
             $table->unsignedBigInteger('genre_id');
-            $table->foreign('genre_id')->references('id')->on('genre'); // <-- 'genre' tanpa 's'
+            $table->foreign('genre_id')->references('id')->on('genres');
 
             $table->timestamps();
         });

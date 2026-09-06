@@ -71,6 +71,14 @@
                         </form>
                     </li>
                 </ul>
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="{{ route('profiles.index') }}" class="nav-link {{ request()->is('profiles*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>Profiles</p>
+                        </a>
+                    </li>
+                </ul>
             </nav>
         </div>
     </aside>
