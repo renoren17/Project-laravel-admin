@@ -41,50 +41,63 @@
             <!-- Sidebar Menu -->
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Menu Dashboard -->
                     <li class="nav-item">
                         <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>Dashboard</p>
                         </a>
                     </li>
+
+                    <!-- Menu Film -->
+                    <li class="nav-item">
+                        <a href="{{ route('film.index') }}" class="nav-link {{ request()->is('film*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-video"></i>
+                            <p>Film</p>
+                        </a>
+                    </li>
+
+                    <!-- Menu Cast -->
                     <li class="nav-item">
                         <a href="{{ route('cast.index') }}" class="nav-link {{ request()->is('cast*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user-tie"></i>
                             <p>Cast</p>
                         </a>
                     </li>
-                </ul>
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+                    <!-- Menu Genre -->
                     <li class="nav-item">
                         <a href="{{ route('genre.index') }}" class="nav-link {{ request()->is('genre*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-film"></i>
                             <p>Genre</p>
                         </a>
                     </li>
+
+                    <!-- Menu Profiles -->
+                    <li class="nav-item">
+                        <a href="{{ route('profiles.index') }}" class="nav-link {{ request()->is('profiles*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>Profiles</p>
+                        </a>
+                    </li>
+
+                    <!-- Menu Roles -->
+                    <li class="nav-item">
+                        <a href="{{ route('roles.index') }}" class="nav-link {{ request()->is('roles*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-shield"></i>
+                            <p>Roles</p>
+                        </a>
+                    </li>
+
+                    <!-- Menu Logout -->
                     <li class="nav-item">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="nav-link border-0 bg-transparent w-100 text-left">
+                            <button type="submit" class="nav-link border-0 bg-transparent w-100 text-left text-white">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>Logout</p>
                             </button>
                         </form>
-                    </li>
-                </ul>
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <li class="nav-item">
-                        <a href="{{ route('profiles.index') }}" class="nav-link {{ request()->is('profiles*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-user"></i>
-                            <p>Profiles</p>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <li class="nav-item">
-                        <a href="{{ route('profiles.index') }}" class="nav-link {{ request()->is('profiles*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-user"></i>
-                            <p>Profiles</p>
-                        </a>
                     </li>
                 </ul>
             </nav>

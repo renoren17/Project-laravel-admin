@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 45);
             $table->string('email', 45);
-            $table->string('password', 45);
+            $table->string('password', 255);
 
             // Kolom Foreign Key
             $table->unsignedBigInteger('role_id');
