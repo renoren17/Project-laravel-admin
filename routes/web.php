@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CastController;
-use App\Http\Controllers\GenreController;   
+use App\Http\Controllers\GenreController;
+use App\Http\Controllers\ProfileController;   
 
 Route::get('/', function () {
     return view('welcome');
@@ -51,3 +52,9 @@ Route::post('/cast', [CastController::class, 'store'])->name('cast.store');
 Route::get('/genre', [GenreController::class, 'index'])->name('genre.index');
 Route::get('/genre/create', [GenreController::class, 'create'])->name('genre.create');
 Route::post('/genre', [GenreController::class, 'store'])->name('genre.store');
+
+Route::resource('profiles', ProfileController::class)->only([
+    'index',
+    'create',
+    'store',
+]);
