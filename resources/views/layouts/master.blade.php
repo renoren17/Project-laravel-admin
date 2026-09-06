@@ -41,22 +41,31 @@
             <!-- Sidebar Menu -->
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Menu Film (BARU) -->
+                    <li class="nav-item">
+                        <a href="{{ route('film.index') }}" class="nav-link {{ request()->is('film*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-video"></i>
+                            <p>Film</p>
+                        </a>
+                    </li>
+
+                    <!-- Menu Cast -->
                     <li class="nav-item">
                         <a href="{{ route('cast.index') }}" class="nav-link {{ request()->is('cast*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user-tie"></i>
                             <p>Cast</p>
                         </a>
                     </li>
-                </ul>
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+                    <!-- Menu Genre -->
                     <li class="nav-item">
                         <a href="{{ route('genre.index') }}" class="nav-link {{ request()->is('genre*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-film"></i>
                             <p>Genre</p>
                         </a>
                     </li>
-                </ul>
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+                    <!-- Menu Profiles -->
                     <li class="nav-item">
                         <a href="{{ route('profiles.index') }}" class="nav-link {{ request()->is('profiles*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user"></i>
