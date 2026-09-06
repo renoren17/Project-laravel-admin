@@ -80,6 +80,7 @@
                             <p>Profiles</p>
                         </a>
                     </li>
+<<<<<<< HEAD
 
                     <!-- Menu Logout -->
                     <li class="nav-item">
@@ -90,6 +91,13 @@
                                 <p>Logout</p>
                             </button>
                         </form>
+=======
+                    <li class="nav-item">
+                        <a href="{{ route('roles.index') }}" class="nav-link {{ request()->is('roles*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-shield"></i>
+                            <p>Roles</p>
+                        </a>
+>>>>>>> 83e9d0175924af3636312504cd8543541ce9d8e8
                     </li>
                 </ul>
             </nav>

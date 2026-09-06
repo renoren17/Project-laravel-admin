@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CastController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\ProfileController;
+<<<<<<< HEAD
 use App\Http\Controllers\FilmController;
+=======
+use App\Http\Controllers\RoleController;
+>>>>>>> 83e9d0175924af3636312504cd8543541ce9d8e8
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,7 +53,11 @@ Route::post('/register', function (Request $request) {
     ]);
 
     $user = DB::transaction(function () use ($data) {
-        $roleId = DB::table('roles')->value('id') ?? DB::table('roles')->insertGetId([]);
+        $roleId = DB::table('roles')->value('id') ?? DB::table('roles')->insertGetId([
+            'nama' => 'User',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
         $profileId = DB::table('profiles')->insertGetId([
             'umur' => 0,
             'bio' => '',
@@ -126,4 +134,14 @@ Route::middleware('auth')->group(function () {
         'create',
         'store',
     ]);
+<<<<<<< HEAD
 });
+=======
+
+    Route::resource('roles', RoleController::class)->only([
+        'index',
+        'create',
+        'store',
+    ]);
+});
+>>>>>>> 83e9d0175924af3636312504cd8543541ce9d8e8
