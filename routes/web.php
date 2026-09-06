@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CastController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -47,7 +48,11 @@ Route::post('/register', function (Request $request) {
     ]);
 
     $user = DB::transaction(function () use ($data) {
-        $roleId = DB::table('roles')->value('id') ?? DB::table('roles')->insertGetId([]);
+        $roleId = DB::table('roles')->value('id') ?? DB::table('roles')->insertGetId([
+            'nama' => 'User',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
         $profileId = DB::table('profiles')->insertGetId([
             'umur' => 0,
             'bio' => '',
@@ -113,6 +118,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/genre', [GenreController::class, 'store'])->name('genre.store');
 
     Route::resource('profiles', ProfileController::class)->only([
+        'index',
+        'create',
+        'store',
+    ]);
+
+    Route::resource('roles', RoleController::class)->only([
         'index',
         'create',
         'store',

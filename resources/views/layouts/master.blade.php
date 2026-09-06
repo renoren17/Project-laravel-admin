@@ -78,6 +78,12 @@
                             <p>Profiles</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('roles.index') }}" class="nav-link {{ request()->is('roles*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-shield"></i>
+                            <p>Roles</p>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
