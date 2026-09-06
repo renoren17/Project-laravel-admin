@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
-            $table->string('email', 255)->unique();
-            $table->string('password', 255); // Diubah dari 45 menjadi 255
+            $table->string('name', 45);
+            $table->string('email', 45);
+            $table->string('password', 255);
 
             // Kolom Foreign Key
             $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('profile_id');
 
             // Definisi Relasi Foreign Key
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
-            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
+            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('profile_id')->references('id')->on('profiles');
 
             $table->timestamps();
         });
