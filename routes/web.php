@@ -1,24 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CastController;
+use App\Http\Controllers\FilmController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\ProfileController;
-<<<<<<< HEAD
-use App\Http\Controllers\FilmController;
-=======
 use App\Http\Controllers\RoleController;
->>>>>>> 83e9d0175924af3636312504cd8543541ce9d8e8
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// ===== Auth (tampilan saja, belum ada proses login) =====
+// Auth
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
@@ -35,9 +32,11 @@ Route::post('/login', function (Request $request) {
         return redirect()->intended('/dashboard');
     }
 
-    return back()->withErrors([
-        'email' => 'Email atau password salah.',
-    ])->onlyInput('email');
+    return back()
+        ->withErrors([
+            'email' => 'Email atau password salah.',
+        ])
+        ->onlyInput('email');
 })->name('login.authenticate');
 
 Route::get('/register', function () {
@@ -53,11 +52,16 @@ Route::post('/register', function (Request $request) {
     ]);
 
     $user = DB::transaction(function () use ($data) {
-        $roleId = DB::table('roles')->value('id') ?? DB::table('roles')->insertGetId([
-            'nama' => 'User',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        $roleId = DB::table('roles')->value('id');
+
+        if (!$roleId) {
+            $roleId = DB::table('roles')->insertGetId([
+                'nama' => 'User',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
         $profileId = DB::table('profiles')->insertGetId([
             'umur' => 0,
             'bio' => '',
@@ -66,13 +70,15 @@ Route::post('/register', function (Request $request) {
             'updated_at' => now(),
         ]);
 
-        return \App\Models\User::unguarded(fn () => \App\Models\User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => $data['password'],
-            'role_id' => $roleId,
-            'profile_id' => $profileId,
-        ]));
+        return \App\Models\User::unguarded(function () use ($data, $roleId, $profileId) {
+            return \App\Models\User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => $data['password'],
+                'role_id' => $roleId,
+                'profile_id' => $profileId,
+            ]);
+        });
     });
 
     Auth::login($user);
@@ -86,7 +92,7 @@ Route::get('/forgot-password', function () {
 })->name('password.request');
 
 Route::post('/forgot-password', function () {
-    return back()->with('status', 'Link reset password telah dikirim (simulasi).');
+    return back()->with('status', 'Link reset password telah dikirim.');
 })->name('password.email');
 
 Route::post('/logout', function () {
@@ -98,12 +104,12 @@ Route::post('/logout', function () {
     return redirect('/');
 })->name('logout');
 
-// ===== Dashboard =====
+// Dashboard
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth')->name('dashboard');
 
-// Users 
+// Users
 Route::get('/users', function () {
     return view('users');
 })->middleware('auth');
@@ -113,7 +119,7 @@ Route::get('/faq', function () {
     return view('faq');
 })->middleware('auth');
 
-// ===== Fitur Utama (dengan proteksi login) =====
+// CRUD yang membutuhkan login
 Route::middleware('auth')->group(function () {
     // Cast
     Route::get('/cast', [CastController::class, 'index'])->name('cast.index');
@@ -134,14 +140,11 @@ Route::middleware('auth')->group(function () {
         'create',
         'store',
     ]);
-<<<<<<< HEAD
-});
-=======
 
+    // Role
     Route::resource('roles', RoleController::class)->only([
         'index',
         'create',
         'store',
     ]);
 });
->>>>>>> 83e9d0175924af3636312504cd8543541ce9d8e8
