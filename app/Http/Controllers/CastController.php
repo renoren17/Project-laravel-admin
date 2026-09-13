@@ -60,7 +60,8 @@ class CastController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $cast = DB::table('casts')->where('id', $id)->first();
+        return view('cast.edit', compact('cast'));
     }
 
     /**
@@ -68,7 +69,21 @@ class CastController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nama' => 'required|min:5',
+            'umur' => 'required|numeric',
+            'bio' => 'required',
+        ]);
+
+        DB::table('casts')
+            ->where('id', $id)
+            ->update([
+                'nama' => $request['nama'],
+                'umur' => $request['umur'],
+                'bio' => $request['bio'],
+            ]);
+
+            return redirect()->route('cast.index')->with(['success'=>'Data berhasil diupdate!!']);
     }
 
     /**
@@ -76,6 +91,7 @@ class CastController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::table('casts')->where('id', $id)->delete();
+        return redirect()->route('cast.index')->with(['success'=>'Data berhasil dihapus']);
     }
 }

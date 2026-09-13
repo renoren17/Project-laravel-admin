@@ -28,6 +28,14 @@
                 <td>{{ $value->nama }}</td>
                 <td>{{ $value->umur }}</td>
                 <td>{{ $value->bio }}</td>
+                <td>
+                  <a href="{{ route('cast.edit', $value->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                  <form action="{{ route('cast.delete', $value->id) }}" method="POST" style="display:inline-block">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin mau hapus data ini?')">Delete</button>
+                  </form>
+                </td>
               </tr>
             @empty
               <tr>
