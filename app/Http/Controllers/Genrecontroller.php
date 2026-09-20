@@ -42,19 +42,15 @@ class Genrecontroller extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $genre = DB::table('genres')
+            ->where('id', $id)
+            ->first();
+
+        return view('genre.edit', compact('genre'));
     }
 
     /**
@@ -62,7 +58,17 @@ class Genrecontroller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nama' => 'required|min:5'
+        ]);
+
+        DB::table('genres')
+            ->where('id', $id)
+            ->update([
+                'nama' => $request->nama
+            ]);
+
+        return redirect()->route('genre.index');
     }
 
     /**
@@ -70,6 +76,10 @@ class Genrecontroller extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::table('genres')
+            ->where('id', $id)
+            ->delete();
+
+        return redirect()->route('genre.index');
     }
 }
