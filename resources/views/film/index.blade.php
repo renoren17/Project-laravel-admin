@@ -33,7 +33,7 @@
                         <td>{{ $item->genre->nama ?? '-' }}</td>
                         <td>
                             @if($item->poster)
-                                <img src="{{ asset('storage/' . $item->poster) }}" width="50" alt="Poster">
+                                <img src="{{ asset($item->poster) }}" width="50" alt="Poster">
                             @else
                                 <span class="badge badge-secondary">Tidak ada poster</span>
                             @endif

@@ -138,7 +138,7 @@
                             @foreach($latestFilms as $film)
                                 <div class="col-sm-6 col-xl-3 mb-3 mb-xl-0">
                                     <a href="{{ route('movie.show', $film->id) }}" class="text-decoration-none text-white">
-                                        <div class="poster-tile" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.8)), url('{{ $film->poster ? asset('storage/' . $film->poster) : 'https://placehold.co/600x900/1f2937/ffffff?text=' . urlencode($film->judul) }}'); background-size: cover; background-position: center; min-height: 220px;">
+                                        <div class="poster-tile" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.8)), url('{{ $film->poster ? asset($film->poster) : 'https://placehold.co/600x900/1f2937/ffffff?text=' . urlencode($film->judul) }}'); background-size: cover; background-position: center; min-height: 220px;">
                                             <h5>{{ $film->judul }}</h5>
                                             <small>{{ $film->genre->nama ?? 'Genre' }} · {{ $film->tahun }}</small>
                                         </div>

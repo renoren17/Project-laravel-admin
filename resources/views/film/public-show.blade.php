@@ -91,7 +91,7 @@
     <div class="row no-gutters">
         <div class="col-md-4">
             @if($film->poster)
-                <img src="{{ asset('storage/' . $film->poster) }}" class="movie-poster" alt="{{ $film->judul }}">
+                <img src="{{ asset($film->poster) }}" class="movie-poster" alt="{{ $film->judul }}">
             @else
                 <div class="d-flex align-items-center justify-content-center h-100 p-4 text-center text-muted">
                     Poster belum tersedia.

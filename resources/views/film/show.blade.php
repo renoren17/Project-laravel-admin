@@ -31,7 +31,7 @@
 </p>
 
 @if($film->poster)
-    <img src="{{ asset('storage/' . $film->poster) }}"
+    <img src="{{ asset($film->poster) }}"
          width="200"
          alt="Poster {{ $film->judul }}">
 @else

@@ -33,14 +33,16 @@ class FilmController extends Controller
             'poster' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $posterPath = $request->file('poster')->store('posters', 'public');
+        $file = $request->file('poster');
+        $fileName = time() . '_' . preg_replace('/\s+/', '_', strtolower($file->getClientOriginalName()));
+        $file->move(public_path('images/posters'), $fileName);
 
         Film::create([
             'judul' => $request->judul,
             'ringkasan' => $request->ringkasan,
             'tahun' => $request->tahun,
             'genre_id' => $request->genre_id,
-            'poster' => $posterPath,
+            'poster' => 'images/posters/' . $fileName,
         ]);
 
         return redirect()
@@ -85,11 +87,15 @@ class FilmController extends Controller
         ];
 
         if ($request->hasFile('poster')) {
-            if ($film->poster) {
-                Storage::disk('public')->delete($film->poster);
+            if ($film->poster && file_exists(public_path($film->poster))) {
+                unlink(public_path($film->poster));
             }
 
-            $data['poster'] = $request->file('poster')->store('posters', 'public');
+            $file = $request->file('poster');
+            $fileName = time() . '_' . preg_replace('/\s+/', '_', strtolower($file->getClientOriginalName()));
+            $file->move(public_path('images/posters'), $fileName);
+
+            $data['poster'] = 'images/posters/' . $fileName;
         }
 
         $film->update($data);
@@ -101,8 +107,8 @@ class FilmController extends Controller
 
     public function destroy(Film $film)
     {
-        if ($film->poster) {
-            Storage::disk('public')->delete($film->poster);
+        if ($film->poster && file_exists(public_path($film->poster))) {
+            unlink(public_path($film->poster));
         }
 
         $film->delete();
