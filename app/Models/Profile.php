@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Profile extends Model
 {
     protected $fillable = [
-        'umur',
+        'nama',
+        'email',
         'bio',
-        'alamat',
+        'role',
     ];
 
     public function user(): HasOne

@@ -16,24 +16,42 @@
 
         <div class="card-body">
 
+            {{-- Nama --}}
             <div class="form-group">
-                <label>Umur</label>
-                <input 
-                    type="number"
-                    name="umur"
+                <label>Nama</label>
+                <input
+                    type="text"
+                    name="nama"
                     class="form-control"
-                    placeholder="Masukkan umur"
-                    value="{{ old('umur') }}"
+                    placeholder="Masukkan nama"
+                    value="{{ old('nama') }}"
                 >
 
-                @error('umur')
+                @error('nama')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
+            {{-- Email --}}
+            <div class="form-group">
+                <label>Email</label>
+                <input
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    placeholder="Masukkan email"
+                    value="{{ old('email') }}"
+                >
+
+                @error('email')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            {{-- Bio --}}
             <div class="form-group">
                 <label>Bio</label>
-                <textarea 
+                <textarea
                     name="bio"
                     class="form-control"
                     rows="4"
@@ -45,16 +63,26 @@
                 @enderror
             </div>
 
+            {{-- Role --}}
             <div class="form-group">
-                <label>Alamat</label>
-                <textarea 
-                    name="alamat"
-                    class="form-control"
-                    rows="3"
-                    placeholder="Masukkan alamat"
-                >{{ old('alamat') }}</textarea>
+                <label>Role</label>
+                <select name="role" class="form-control">
 
-                @error('alamat')
+                    <option value="">-- Pilih Role --</option>
+
+                    <option value="admin"
+                        {{ old('role') == 'admin' ? 'selected' : '' }}>
+                        Admin
+                    </option>
+
+                    <option value="user"
+                        {{ old('role') == 'user' ? 'selected' : '' }}>
+                        User
+                    </option>
+
+                </select>
+
+                @error('role')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>

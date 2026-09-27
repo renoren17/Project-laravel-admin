@@ -42,10 +42,10 @@
 
                     <tr>
                         <td>{{ $profile->id }}</td>
-                        <td>{{ $profile->user?->name ?? '-' }}</td>
-                        <td>{{ $profile->user?->email ?? '-' }}</td>
+                        <td>{{ $profile->user?->name ?? $profile->nama ?? '-' }}</td>
+                        <td>{{ $profile->user?->email ?? $profile->email ?? '-' }}</td>
                         <td>{{ $profile->bio }}</td>
-                        <td>{{ $profile->user?->role?->nama ?? '-' }}</td>
+                        <td>{{ $profile->user?->role?->nama ?? $profile->role ?? '-' }}</td>
                     </tr>
 
                 @empty

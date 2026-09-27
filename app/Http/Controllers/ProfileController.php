@@ -31,15 +31,17 @@ class ProfileController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'umur' => 'required|integer',
-            'bio' => 'required',
-            'alamat' => 'required',
+            'nama' => 'required|string',
+            'email' => 'required|email',
+            'bio' => 'required|string',
+            'role' => 'required|string',
         ]);
 
         Profile::create([
-            'umur' => $request->umur,
+            'nama' => $request->nama,
+            'email' => $request->email,
             'bio' => $request->bio,
-            'alamat' => $request->alamat,
+            'role' => $request->role,
         ]);
 
         return redirect()->route('profiles.index')
