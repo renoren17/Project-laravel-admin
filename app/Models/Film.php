@@ -11,12 +11,11 @@ class Film extends Model
         'ringkasan',
         'tahun',
         'poster',
-        'genre_id',
     ];
 
-    public function genre()
+    public function genres()
     {
-        return $this->belongsTo(Genre::class);
+        return $this->belongsToMany(Genre::class, 'film_genre');
     }
 
     public function cast()

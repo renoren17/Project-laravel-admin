@@ -105,7 +105,7 @@ Route::post('/logout', function () {
 
 // Dashboard user / katalog film
 Route::get('/dashboard', function () {
-    $latestFilms = \App\Models\Film::with('genre')->latest()->take(4)->get();
+    $latestFilms = \App\Models\Film::with('genres')->latest()->take(4)->get();
     $totalFilms = \App\Models\Film::count();
     $totalGenres = \App\Models\Genre::count();
     $totalCasts = \App\Models\Cast::count();
@@ -116,6 +116,22 @@ Route::get('/dashboard', function () {
 })->middleware('auth')->name('dashboard');
 
 Route::get('/movie/{film}', [FilmController::class, 'publicShow'])->name('movie.show');
+
+//buat genre populer
+Route::get('/dashboard', function () {
+    $latestFilms = \App\Models\Film::with('genres')->latest()->take(4)->get();
+    $totalFilms = \App\Models\Film::count();
+    $totalGenres = \App\Models\Genre::count();
+    $totalCasts = \App\Models\Cast::count();
+    $totalRoles = \App\Models\Role::count();
+    $latestKritiks = \App\Models\Kritik::with(['film', 'user'])->latest()->take(3)->get();
+    $popularGenres = \App\Models\Genre::withCount('films')
+        ->orderByDesc('films_count')
+        ->take(4)
+        ->get();
+
+    return view('dashboard', compact('latestFilms', 'totalFilms', 'totalGenres', 'totalCasts', 'totalRoles', 'latestKritiks', 'popularGenres'));
+})->middleware('auth')->name('dashboard');
 
 // Users
 Route::get('/users', function () {

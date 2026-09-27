@@ -140,7 +140,7 @@
                                     <a href="{{ route('movie.show', $film->id) }}" class="text-decoration-none text-white">
                                         <div class="poster-tile" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.8)), url('{{ $film->poster ? asset($film->poster) : 'https://placehold.co/600x900/1f2937/ffffff?text=' . urlencode($film->judul) }}'); background-size: cover; background-position: center; min-height: 220px;">
                                             <h5>{{ $film->judul }}</h5>
-                                            <small>{{ $film->genre->nama ?? 'Genre' }} · {{ $film->tahun }}</small>
+                                            <small>{{ $film->genres->pluck('nama')->join(', ') ?: 'Genre' }} · {{ $film->tahun }}</small>
                                         </div>
                                     </a>
                                 </div>
@@ -155,10 +155,23 @@
             <div class="card section-card">
                 <div class="card-header bg-white border-0 pt-3"><h3 class="card-title font-weight-bold">Genre Populer</h3></div>
                 <div class="card-body pt-1">
-                    <div class="progress-group">Drama <span class="float-right"><b>18</b>/24</span><div class="progress progress-sm"><div class="progress-bar bg-warning" style="width: 75%"></div></div></div>
-                    <div class="progress-group">Action <span class="float-right"><b>14</b>/24</span><div class="progress progress-sm"><div class="progress-bar bg-danger" style="width: 58%"></div></div></div>
-                    <div class="progress-group">Comedy <span class="float-right"><b>9</b>/24</span><div class="progress progress-sm"><div class="progress-bar bg-info" style="width: 38%"></div></div></div>
-                    <div class="progress-group mb-0">Thriller <span class="float-right"><b>7</b>/24</span><div class="progress progress-sm"><div class="progress-bar bg-success" style="width: 29%"></div></div></div>
+                    @php
+                        $barColors = ['bg-warning', 'bg-danger', 'bg-info', 'bg-success'];
+                    @endphp
+
+                    @forelse($popularGenres as $index => $genre)
+                        <div class="progress-group{{ $loop->last ? ' mb-0' : '' }}">
+                            {{ $genre->nama }}
+                            <span class="float-right"><b>{{ $genre->films_count }}</b>/{{ $totalFilms }}</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar {{ $barColors[$index % count($barColors)] }}"
+                                    style="width: {{ $totalFilms > 0 ? round(($genre->films_count / $totalFilms) * 100) : 0 }}%">
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <p class="text-muted mb-0">Belum ada data genre.</p>
+                    @endforelse
                 </div>
             </div>
         </div>

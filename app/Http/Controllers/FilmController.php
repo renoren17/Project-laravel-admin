@@ -29,7 +29,8 @@ class FilmController extends Controller
             'judul' => 'required',
             'ringkasan' => 'required',
             'tahun' => 'required|numeric',
-            'genre_id' => 'required',
+            'genre_id' => 'required|array',
+            'genre_id.*' => 'exists:genres,id',
             'poster' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -37,13 +38,14 @@ class FilmController extends Controller
         $fileName = time() . '_' . preg_replace('/\s+/', '_', strtolower($file->getClientOriginalName()));
         $file->move(public_path('images/posters'), $fileName);
 
-        Film::create([
+        $film = Film::create([
             'judul' => $request->judul,
             'ringkasan' => $request->ringkasan,
             'tahun' => $request->tahun,
-            'genre_id' => $request->genre_id,
             'poster' => 'images/posters/' . $fileName,
         ]);
+
+        $film->genres()->sync($request->genre_id);
 
         return redirect()
             ->route('film.index')
@@ -57,7 +59,7 @@ class FilmController extends Controller
 
     public function publicShow(Film $film)
     {
-        $film->load('genre', 'cast');
+        $film->load('genres', 'cast');
 
         return view('film.public-show', compact('film'));
     }
@@ -75,7 +77,8 @@ class FilmController extends Controller
             'judul' => 'required',
             'ringkasan' => 'required',
             'tahun' => 'required|numeric',
-            'genre_id' => 'required',
+            'genre_id' => 'required|array',
+            'genre_id.*' => 'exists:genres,id',
             'poster' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -83,7 +86,6 @@ class FilmController extends Controller
             'judul' => $request->judul,
             'ringkasan' => $request->ringkasan,
             'tahun' => $request->tahun,
-            'genre_id' => $request->genre_id,
         ];
 
         if ($request->hasFile('poster')) {
@@ -99,6 +101,7 @@ class FilmController extends Controller
         }
 
         $film->update($data);
+        $film->genres()->sync($request->genre_id);
 
         return redirect()
             ->route('film.index')

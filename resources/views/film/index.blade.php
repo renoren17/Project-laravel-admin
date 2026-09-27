@@ -30,7 +30,7 @@
                         <td>{{ $item->judul }}</td>
                         <td>{{ Str::limit($item->ringkasan, 50) }}</td>
                         <td>{{ $item->tahun }}</td>
-                        <td>{{ $item->genre->nama ?? '-' }}</td>
+                        <td>{{ $item->genres->pluck('nama')->join(', ') ?: '-' }}</td>
                         <td>
                             @if($item->poster)
                                 <img src="{{ asset($item->poster) }}" width="50" alt="Poster">

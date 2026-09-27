@@ -23,7 +23,7 @@
 
 <p>
     <strong>Genre:</strong>
-    {{ $film->genre->nama ?? '-' }}
+    {{ $film->genres->pluck('nama')->join(', ') ?: '-' }}
 </p>
 
 <p>

@@ -102,12 +102,16 @@
         <div class="col-md-8">
             <div class="movie-detail-body">
                 <div class="movie-badges">
-                    <span class="movie-badge">{{ $film->genre->nama ?? 'Genre' }}</span>
+                    @forelse($film->genres as $genre)
+                        <span class="movie-badge">{{ $genre->nama }}</span>
+                    @empty
+                        <span class="movie-badge">Genre</span>
+                    @endforelse
                     <span class="movie-badge">{{ $film->tahun }}</span>
                 </div>
 
                 <h1>{{ $film->judul }}</h1>
-                <div class="movie-meta">{{ $film->genre->nama ?? 'Genre tidak tersedia' }} • {{ $film->tahun }}</div>
+                <div class="movie-meta">{{ $film->genres->pluck('nama')->join(', ') ?: 'Genre tidak tersedia' }} • {{ $film->tahun }}</div>
 
                 <div>
                     <div class="section-title">Ringkasan</div>

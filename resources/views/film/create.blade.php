@@ -26,13 +26,14 @@
     <br><br>
 
     <label>Genre</label>
-    <select name="genre_id">
+    <select name="genre_id[]" multiple>
         @foreach ($genres as $genre)
             <option value="{{ $genre->id }}">
                 {{ $genre->nama }}
             </option>
         @endforeach
     </select>
+    <small>Tahan Ctrl (Windows) / Cmd (Mac) buat pilih lebih dari satu genre</small>
     <br><br>
 
     <button type="submit">Simpan</button>

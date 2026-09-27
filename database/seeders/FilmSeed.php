@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class FilmSeed extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $genres = [
@@ -30,28 +27,30 @@ class FilmSeed extends Seeder
                 'judul' => 'Bocchi the Rock!',
                 'ringkasan' => 'Cerita tentang Hitori Gotou, seorang gadis pemalu yang ingin tampil hebat di band.',
                 'tahun' => 2022,
-                'genre_id' => Genre::where('nama', 'Music')->value('id'),
+                'genres' => ['Music', 'Comedy', 'Slice of Life'],
                 'poster' => 'images/posters/Bocchi the Rock!.jpeg',
             ],
             [
                 'judul' => 'My Deer Friend Nokotan',
                 'ringkasan' => 'Anime komedi yang penuh kehangatan dengan karakter unik dan kisah yang ringan.',
                 'tahun' => 2023,
-                'genre_id' => Genre::where('nama', 'Comedy')->value('id'),
+                'genres' => ['Comedy', 'Slice of Life'],
                 'poster' => 'images/posters/Shikanoko Nokonoko Koshitantan.jpeg',
             ],
         ];
 
         foreach ($filmData as $film) {
-            Film::firstOrCreate(
+            $newFilm = Film::firstOrCreate(
                 ['judul' => $film['judul']],
                 [
                     'ringkasan' => $film['ringkasan'],
                     'tahun' => $film['tahun'],
-                    'genre_id' => $film['genre_id'],
                     'poster' => $film['poster'],
                 ]
             );
+
+            $genreIds = Genre::whereIn('nama', $film['genres'])->pluck('id');
+            $newFilm->genres()->sync($genreIds);
         }
 
         $castData = [
