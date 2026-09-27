@@ -20,6 +20,6 @@ class Film extends Model
 
     public function cast()
     {
-        return $this->belongsToMany(Cast::class, 'perans');
+        return $this->belongsToMany(Cast::class, 'perans')->withPivot('nama')->withTimestamps();
     }
 }

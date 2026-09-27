@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Film;
 use App\Models\Genre;
+use App\Models\Cast;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,8 +20,9 @@ class FilmController extends Controller
     public function create()
     {
         $genres = Genre::all();
+        $casts = Cast::all();
 
-        return view('film.create', compact('genres'));
+        return view('film.create', compact('genres', 'casts'));
     }
 
     public function store(Request $request)
@@ -47,6 +49,14 @@ class FilmController extends Controller
 
         $film->genres()->sync($request->genre_id);
 
+        if ($request->filled('cast_id')) {
+            $castData = Cast::whereIn('id', $request->cast_id)
+                ->get()
+                ->mapWithKeys(fn($cast) => [$cast->id => ['nama' => $cast->nama]]);
+
+            $film->cast()->sync($castData);
+        }
+
         return redirect()
             ->route('film.index')
             ->with('success', 'Film berhasil ditambahkan!');
@@ -67,8 +77,9 @@ class FilmController extends Controller
     public function edit(Film $film)
     {
         $genres = Genre::all();
+        $casts = Cast::all();
 
-        return view('film.edit', compact('film', 'genres'));
+        return view('film.edit', compact('film', 'genres', 'casts'));
     }
 
     public function update(Request $request, Film $film)
@@ -103,6 +114,16 @@ class FilmController extends Controller
         $film->update($data);
         $film->genres()->sync($request->genre_id);
 
+        if ($request->filled('cast_id')) {
+            $castData = Cast::whereIn('id', $request->cast_id)
+                ->get()
+                ->mapWithKeys(fn($cast) => [$cast->id => ['nama' => $cast->nama]]);
+
+            $film->cast()->sync($castData);
+        } else {
+            $film->cast()->sync([]);
+        }
+
         return redirect()
             ->route('film.index')
             ->with('success', 'Film berhasil diperbarui!');
@@ -111,9 +132,11 @@ class FilmController extends Controller
     public function destroy(Film $film)
     {
         if ($film->poster && file_exists(public_path($film->poster))) {
-            unlink(public_path($film->poster));
+        unlink(public_path($film->poster));
         }
 
+        $film->cast()->detach();
+        $film->genres()->detach();
         $film->delete();
 
         return redirect()
