@@ -18,4 +18,9 @@ class Film extends Model
     {
         return $this->belongsTo(Genre::class);
     }
+
+    public function cast()
+    {
+        return $this->belongsToMany(Cast::class, 'perans');
+    }
 }

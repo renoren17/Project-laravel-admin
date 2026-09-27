@@ -104,10 +104,17 @@ Route::post('/logout', function () {
     return redirect('/');
 })->name('logout');
 
-// Dashboard
+// Dashboard user / katalog film
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $latestFilms = \App\Models\Film::with('genre')->latest()->take(4)->get();
+    $totalFilms = \App\Models\Film::count();
+    $totalGenres = \App\Models\Genre::count();
+    $totalCasts = \App\Models\Cast::count();
+
+    return view('dashboard', compact('latestFilms', 'totalFilms', 'totalGenres', 'totalCasts'));
 })->middleware('auth')->name('dashboard');
+
+Route::get('/movie/{film}', [FilmController::class, 'publicShow'])->name('movie.show');
 
 // Users
 Route::get('/users', function () {
@@ -134,6 +141,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/genre', [GenreController::class, 'index'])->name('genre.index');
     Route::get('/genre/create', [GenreController::class, 'create'])->name('genre.create');
     Route::post('/genre', [GenreController::class, 'store'])->name('genre.store');
+    Route::get('/genre/{id}/edit', [GenreController::class, 'edit'])->name('genre.edit');
+    Route::put('/genre/{id}', [GenreController::class, 'update'])->name('genre.update');
+    Route::delete('/genre/{id}', [GenreController::class, 'destroy'])->name('genre.destroy');
 
     // Film
     Route::resource('film', FilmController::class);

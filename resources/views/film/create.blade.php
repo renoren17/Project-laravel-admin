@@ -6,7 +6,7 @@
 
 <h1>Tambah Film</h1>
 
-<form action="{{ route('film.store') }}" method="POST">
+<form action="{{ route('film.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
     <label>Judul Film</label>
@@ -22,7 +22,7 @@
     <br><br>
 
     <label>Poster</label>
-    <input type="text" name="poster">
+    <input type="file" name="poster" accept="image/*">
     <br><br>
 
     <label>Genre</label>

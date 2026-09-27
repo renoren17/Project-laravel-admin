@@ -91,7 +91,7 @@
         <div class="col-lg-3 col-6">
             <div class="card stat-card">
                 <div class="card-body d-flex justify-content-between align-items-center">
-                    <div><h3 class="mb-1">24</h3><p class="text-muted mb-0">Total Film</p></div>
+                    <div><h3 class="mb-1">{{ $totalFilms }}</h3><p class="text-muted mb-0">Total Film</p></div>
                     <i class="fas fa-video stat-icon"></i>
                 </div>
             </div>
@@ -99,7 +99,7 @@
         <div class="col-lg-3 col-6">
             <div class="card stat-card" style="border-left-color: #d95d39;">
                 <div class="card-body d-flex justify-content-between align-items-center">
-                    <div><h3 class="mb-1">8</h3><p class="text-muted mb-0">Genre</p></div>
+                    <div><h3 class="mb-1">{{ $totalGenres }}</h3><p class="text-muted mb-0">Genre</p></div>
                     <i class="fas fa-layer-group stat-icon" style="color: #d95d39;"></i>
                 </div>
             </div>
@@ -107,7 +107,7 @@
         <div class="col-lg-3 col-6">
             <div class="card stat-card" style="border-left-color: #4f8a8b;">
                 <div class="card-body d-flex justify-content-between align-items-center">
-                    <div><h3 class="mb-1">67</h3><p class="text-muted mb-0">Cast</p></div>
+                    <div><h3 class="mb-1">{{ $totalCasts }}</h3><p class="text-muted mb-0">Cast</p></div>
                     <i class="fas fa-users stat-icon" style="color: #4f8a8b;"></i>
                 </div>
             </div>
@@ -127,15 +127,25 @@
             <div class="card section-card">
                 <div class="card-header bg-white border-0 pt-3">
                     <h3 class="card-title font-weight-bold">Film Terbaru</h3>
-                    <a href="#" class="float-right text-dark small">Lihat semua <i class="fas fa-arrow-right ml-1"></i></a>
+                    <a href="{{ route('film.index') }}" class="float-right text-dark small">Lihat semua <i class="fas fa-arrow-right ml-1"></i></a>
                 </div>
                 <div class="card-body pt-1">
-                    <div class="row">
-                        <div class="col-sm-6 col-xl-3 mb-3 mb-xl-0"><div class="poster-tile poster-one"><h5>Langit Senja</h5><small>Drama · 2026</small></div></div>
-                        <div class="col-sm-6 col-xl-3 mb-3 mb-xl-0"><div class="poster-tile poster-two"><h5>Jejak Pulang</h5><small>Adventure · 2025</small></div></div>
-                        <div class="col-sm-6 col-xl-3 mb-3 mb-sm-0"><div class="poster-tile poster-three"><h5>Orbit Terakhir</h5><small>Science Fiction · 2025</small></div></div>
-                        <div class="col-sm-6 col-xl-3"><div class="poster-tile poster-four"><h5>Malam di Kota</h5><small>Thriller · 2024</small></div></div>
-                    </div>
+                    @if($latestFilms->isEmpty())
+                        <div class="alert alert-light mb-0">Belum ada film yang ditambahkan.</div>
+                    @else
+                        <div class="row">
+                            @foreach($latestFilms as $film)
+                                <div class="col-sm-6 col-xl-3 mb-3 mb-xl-0">
+                                    <a href="{{ route('movie.show', $film->id) }}" class="text-decoration-none text-white">
+                                        <div class="poster-tile" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.8)), url('{{ $film->poster ? asset('storage/' . $film->poster) : 'https://placehold.co/600x900/1f2937/ffffff?text=' . urlencode($film->judul) }}'); background-size: cover; background-position: center; min-height: 220px;">
+                                            <h5>{{ $film->judul }}</h5>
+                                            <small>{{ $film->genre->nama ?? 'Genre' }} · {{ $film->tahun }}</small>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

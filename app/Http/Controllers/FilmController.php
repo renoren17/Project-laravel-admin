@@ -3,25 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Film;
-use App\Models\Genre; // Tambahkan jika butuh mengambil data genre untuk dropdown form
+use App\Models\Genre;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FilmController extends Controller
 {
     public function index()
     {
         $film = Film::all();
+
         return view('film.index', compact('film'));
     }
 
-    // TAMBAHKAN METHOD INI
     public function create()
     {
-        $genres = Genre::all(); // Ambil data genre jika form butuh pilih genre
+        $genres = Genre::all();
+
         return view('film.create', compact('genres'));
     }
 
-    // Method untuk menyimpan data film baru dari form
     public function store(Request $request)
     {
         $request->validate([
@@ -42,6 +43,72 @@ class FilmController extends Controller
             'poster' => $posterPath,
         ]);
 
-        return redirect()->route('film.index')->with('success', 'Film berhasil ditambahkan!');
+        return redirect()
+            ->route('film.index')
+            ->with('success', 'Film berhasil ditambahkan!');
+    }
+
+    public function show(Film $film)
+    {
+        return view('film.show', compact('film'));
+    }
+
+    public function publicShow(Film $film)
+    {
+        $film->load('genre', 'cast');
+
+        return view('film.public-show', compact('film'));
+    }
+
+    public function edit(Film $film)
+    {
+        $genres = Genre::all();
+
+        return view('film.edit', compact('film', 'genres'));
+    }
+
+    public function update(Request $request, Film $film)
+    {
+        $request->validate([
+            'judul' => 'required',
+            'ringkasan' => 'required',
+            'tahun' => 'required|numeric',
+            'genre_id' => 'required',
+            'poster' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $data = [
+            'judul' => $request->judul,
+            'ringkasan' => $request->ringkasan,
+            'tahun' => $request->tahun,
+            'genre_id' => $request->genre_id,
+        ];
+
+        if ($request->hasFile('poster')) {
+            if ($film->poster) {
+                Storage::disk('public')->delete($film->poster);
+            }
+
+            $data['poster'] = $request->file('poster')->store('posters', 'public');
+        }
+
+        $film->update($data);
+
+        return redirect()
+            ->route('film.index')
+            ->with('success', 'Film berhasil diperbarui!');
+    }
+
+    public function destroy(Film $film)
+    {
+        if ($film->poster) {
+            Storage::disk('public')->delete($film->poster);
+        }
+
+        $film->delete();
+
+        return redirect()
+            ->route('film.index')
+            ->with('success', 'Film berhasil dihapus!');
     }
 }
