@@ -18,11 +18,16 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
+        <div class="alert alert-info">
+            Role di sini berguna untuk membedakan hak akses user: <strong>Admin</strong> untuk CRUD dan <strong>User</strong> untuk melihat dashboard dan film.
+        </div>
+
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th width="10%">ID</th>
                     <th>Nama Role</th>
+                    <th width="25%">Keterangan</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,10 +35,19 @@
                     <tr>
                         <td>{{ $role->id }}</td>
                         <td>{{ $role->nama }}</td>
+                        <td>
+                            @if(strtolower($role->nama) === 'admin')
+                                CRUD data
+                            @elseif(strtolower($role->nama) === 'user')
+                                Lihat dashboard & katalog
+                            @else
+                                Hak akses khusus
+                            @endif
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="2" class="text-center">Belum ada data role.</td>
+                        <td colspan="3" class="text-center">Belum ada data role.</td>
                     </tr>
                 @endforelse
             </tbody>

@@ -115,12 +115,13 @@
         <div class="col-lg-3 col-6">
             <div class="card stat-card" style="border-left-color: #7b6d8d;">
                 <div class="card-body d-flex justify-content-between align-items-center">
-                    <div><h3 class="mb-1">132</h3><p class="text-muted mb-0">Kritik</p></div>
-                    <i class="fas fa-comment-alt stat-icon" style="color: #7b6d8d;"></i>
+                    <div><h3 class="mb-1">{{ $totalRoles }}</h3><p class="text-muted mb-0">Role</p></div>
+                    <i class="fas fa-user-shield stat-icon" style="color: #7b6d8d;"></i>
                 </div>
             </div>
         </div>
     </div>
+
 
     <div class="row mt-2">
         <div class="col-lg-8">
@@ -169,9 +170,24 @@
             <table class="table table-hover mb-0">
                 <thead><tr><th class="pl-3">Film</th><th>Pengguna</th><th>Rating</th><th>Komentar</th></tr></thead>
                 <tbody>
-                    <tr><td class="pl-3 font-weight-bold">Langit Senja</td><td>Raka</td><td><span class="text-warning">★★★★★</span></td><td class="text-muted">Visualnya sangat kuat.</td></tr>
-                    <tr><td class="pl-3 font-weight-bold">Jejak Pulang</td><td>Cinta</td><td><span class="text-warning">★★★★<span class="text-muted">★</span></span></td><td class="text-muted">Cerita hangat dan ringan.</td></tr>
-                    <tr><td class="pl-3 font-weight-bold">Orbit Terakhir</td><td>Wildan</td><td><span class="text-warning">★★★★<span class="text-muted">★</span></span></td><td class="text-muted">Konsepnya menarik.</td></tr>
+                    @forelse($latestKritiks as $kritik)
+                        <tr>
+                            <td class="pl-3 font-weight-bold">{{ $kritik->film->judul ?? 'Film' }}</td>
+                            <td>{{ $kritik->user->name ?? 'Pengguna' }}</td>
+                            <td>
+                                @php
+                                    $stars = str_repeat('★', $kritik->point ?? 0);
+                                    $emptyStars = str_repeat('☆', max(5 - ($kritik->point ?? 0), 0));
+                                @endphp
+                                <span class="text-warning">{{ $stars }}{{ $emptyStars }}</span>
+                            </td>
+                            <td class="text-muted">{{ Str::limit($kritik->content, 80) }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">Belum ada kritik film.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

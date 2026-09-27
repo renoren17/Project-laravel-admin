@@ -110,8 +110,10 @@ Route::get('/dashboard', function () {
     $totalFilms = \App\Models\Film::count();
     $totalGenres = \App\Models\Genre::count();
     $totalCasts = \App\Models\Cast::count();
+    $totalRoles = \App\Models\Role::count();
+    $latestKritiks = \App\Models\Kritik::with(['film', 'user'])->latest()->take(3)->get();
 
-    return view('dashboard', compact('latestFilms', 'totalFilms', 'totalGenres', 'totalCasts'));
+    return view('dashboard', compact('latestFilms', 'totalFilms', 'totalGenres', 'totalCasts', 'totalRoles', 'latestKritiks'));
 })->middleware('auth')->name('dashboard');
 
 Route::get('/movie/{film}', [FilmController::class, 'publicShow'])->name('movie.show');
