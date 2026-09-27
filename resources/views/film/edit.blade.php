@@ -3,106 +3,284 @@
 @section('title', 'Edit Film')
 
 @section('content')
+
 <div class="row">
-  <div class="col-md-12">
-    <div class="card card-primary">
-      <form action="{{ route('film.update', $film->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
-        <div class="card-body">
-          <div class="form-group">
-            <label for="judul">Judul Film</label>
-            <input name="judul" type="text" class="form-control @error('judul') is-invalid @enderror" id="judul" placeholder="Judul Film" value="{{ old('judul', $film->judul) }}">
-            @error('judul')
-              <span class="error invalid-feedback" style="display: inline;">{{ $message }}</span>
-            @enderror
-          </div>
+    <div class="col-md-12">
+        <div class="card card-primary">
 
-          <div class="form-group">
-            <label for="ringkasan">Ringkasan</label>
-            <textarea name="ringkasan" class="form-control @error('ringkasan') is-invalid @enderror" id="ringkasan" placeholder="Ringkasan">{{ old('ringkasan', $film->ringkasan) }}</textarea>
-            @error('ringkasan')
-              <span class="error invalid-feedback" style="display: inline;">{{ $message }}</span>
-            @enderror
-          </div>
+            <form
+                action="{{ route('film.update', $film->id) }}"
+                method="POST"
+                enctype="multipart/form-data"
+            >
 
-          <div class="form-group">
-            <label for="tahun">Tahun</label>
-            <input name="tahun" type="number" class="form-control @error('tahun') is-invalid @enderror" id="tahun" placeholder="Tahun" value="{{ old('tahun', $film->tahun) }}">
-            @error('tahun')
-              <span class="error invalid-feedback" style="display: inline;">{{ $message }}</span>
-            @enderror
-          </div>
+                @csrf
+                @method('PUT')
 
-          <div class="form-group">
-            <label for="poster">Poster</label><br>
-            @if($film->poster)
-              <img src="{{ asset($film->poster) }}" width="120" class="mb-2 rounded"><br>
-            @endif
-            <div class="custom-file">
-              <input name="poster" type="file" accept="image/*" class="custom-file-input @error('poster') is-invalid @enderror" id="poster">
-              <label class="custom-file-label" for="poster">Ganti file...</label>
-              @error('poster')
-                <span class="error invalid-feedback" style="display: inline;">{{ $message }}</span>
-              @enderror
-            </div>
-          </div>
+                <div class="card-body">
 
-          <div class="form-group">
-            <label>Genre</label>
-            <div class="border rounded p-2 @error('genre_id') is-invalid @enderror" style="max-height: 160px; overflow-y: auto;">
-                @foreach ($genres as $genre)
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="genre_id[]" value="{{ $genre->id }}"
-                    id="genre_{{ $genre->id }}"
-                    {{ $film->genres->pluck('id')->contains($genre->id) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="genre_{{ $genre->id }}">
-                    {{ $genre->nama }}
-                    </label>
+                    {{-- JUDUL --}}
+                    <div class="form-group">
+                        <label for="judul">Judul Film</label>
+
+                        <input
+                            name="judul"
+                            type="text"
+                            class="form-control @error('judul') is-invalid @enderror"
+                            id="judul"
+                            placeholder="Judul Film"
+                            value="{{ old('judul', $film->judul) }}"
+                        >
+
+                        @error('judul')
+                            <span class="error invalid-feedback" style="display: inline;">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </div>
+
+
+                    {{-- TAHUN --}}
+                    <div class="form-group">
+                        <label for="tahun">Tahun</label>
+
+                        <input
+                            name="tahun"
+                            type="number"
+                            class="form-control @error('tahun') is-invalid @enderror"
+                            id="tahun"
+                            placeholder="Tahun"
+                            value="{{ old('tahun', $film->tahun) }}"
+                        >
+
+                        @error('tahun')
+                            <span class="error invalid-feedback" style="display: inline;">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </div>
+
+
+                    {{-- GENRE --}}
+                    <div class="form-group">
+                        <label>Genre</label>
+
+                        <div
+                            class="border rounded p-2 @error('genre_id') is-invalid @enderror"
+                            style="max-height: 160px; overflow-y: auto;"
+                        >
+
+                            @foreach ($genres as $genre)
+
+                                <div class="form-check">
+
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="genre_id[]"
+                                        value="{{ $genre->id }}"
+                                        id="genre_{{ $genre->id }}"
+                                        {{ $film->genres->pluck('id')->contains($genre->id) ? 'checked' : '' }}
+                                    >
+
+                                    <label
+                                        class="form-check-label"
+                                        for="genre_{{ $genre->id }}"
+                                    >
+                                        {{ $genre->nama }}
+                                    </label>
+
+                                </div>
+
+                            @endforeach
+
+                        </div>
+
+                        @error('genre_id')
+                            <span class="error invalid-feedback" style="display: inline;">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </div>
+
+
+                    {{-- TRAILER YOUTUBE --}}
+                    <div class="form-group">
+                        <label for="trailer_url">Trailer YouTube</label>
+
+                        <input
+                            name="trailer_url"
+                            type="url"
+                            class="form-control @error('trailer_url') is-invalid @enderror"
+                            id="trailer_url"
+                            placeholder="https://www.youtube.com/watch?v=..."
+                            value="{{ old('trailer_url', $film->trailer_url) }}"
+                        >
+
+                        @error('trailer_url')
+                            <span class="error invalid-feedback" style="display: inline;">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </div>
+
+
+                    {{-- RINGKASAN --}}
+                    <div class="form-group">
+                        <label for="ringkasan">Ringkasan</label>
+
+                        <textarea
+                            name="ringkasan"
+                            class="form-control @error('ringkasan') is-invalid @enderror"
+                            id="ringkasan"
+                            placeholder="Ringkasan"
+                        >{{ old('ringkasan', $film->ringkasan) }}</textarea>
+
+                        @error('ringkasan')
+                            <span class="error invalid-feedback" style="display: inline;">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </div>
+
+
+                    {{-- POSTER --}}
+                    <div class="form-group">
+                        <label for="poster">Poster</label>
+
+                        <br>
+
+                        @if($film->poster)
+
+                            <img
+                                src="{{ asset($film->poster) }}"
+                                width="120"
+                                class="mb-2 rounded"
+                            >
+
+                            <br>
+
+                        @endif
+
+                        <div class="custom-file">
+
+                            <input
+                                name="poster"
+                                type="file"
+                                accept="image/*"
+                                class="custom-file-input @error('poster') is-invalid @enderror"
+                                id="poster"
+                            >
+
+                            <label
+                                class="custom-file-label"
+                                for="poster"
+                            >
+                                Ganti file...
+                            </label>
+
+                            @error('poster')
+                                <span class="error invalid-feedback" style="display: inline;">
+                                    {{ $message }}
+                                </span>
+                            @enderror
+
+                        </div>
+                    </div>
+
+
+                    {{-- CAST --}}
+                    <div class="form-group">
+                        <label>Cast</label>
+
+                        <div
+                            class="border rounded p-2 @error('cast_id') is-invalid @enderror"
+                            style="max-height: 200px; overflow-y: auto;"
+                        >
+
+                            @foreach ($casts as $cast)
+
+                                <div class="form-check">
+
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="cast_id[]"
+                                        value="{{ $cast->id }}"
+                                        id="cast_{{ $cast->id }}"
+                                        {{ $film->cast->pluck('id')->contains($cast->id) ? 'checked' : '' }}
+                                    >
+
+                                    <label
+                                        class="form-check-label"
+                                        for="cast_{{ $cast->id }}"
+                                    >
+                                        {{ $cast->nama }}
+                                    </label>
+
+                                </div>
+
+                            @endforeach
+
+                        </div>
+
+                        @error('cast_id')
+                            <span class="error invalid-feedback" style="display: inline;">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </div>
+
                 </div>
-                @endforeach
-            </div>
-            @error('genre_id')
-                <span class="error invalid-feedback" style="display: inline;">{{ $message }}</span>
-            @enderror
-          </div>
 
-          <div class="form-group">
-            <label>Cast</label>
-            <div class="border rounded p-2 @error('cast_id') is-invalid @enderror" style="max-height: 200px; overflow-y: auto;">
-                @foreach ($casts as $cast)
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="cast_id[]" value="{{ $cast->id }}"
-                    id="cast_{{ $cast->id }}"
-                    {{ $film->cast->pluck('id')->contains($cast->id) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="cast_{{ $cast->id }}">
-                    {{ $cast->nama }}
-                    </label>
+
+                {{-- BUTTON --}}
+                <div class="px-3 d-flex justify-content-between align-items-center">
+
+                    <button
+                        type="reset"
+                        class="btn btn-warning"
+                    >
+                        Reset
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Submit
+                    </button>
+
                 </div>
-                @endforeach
-            </div>
-            @error('cast_id')
-                <span class="error invalid-feedback" style="display: inline;">{{ $message }}</span>
-            @enderror
-          </div>
+
+            </form>
+
         </div>
-        <div class="px-3 d-flex justify-content-between align-items-center">
-          <button type="reset" class="btn btn-warning">Reset</button>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
     </div>
-  </div>
 </div>
 
+
 @push('js')
+
 <script>
-  $(document).ready(function () {
-    $('.custom-file-input').on('change', function () {
-      let fileName = $(this).val().split('\\').pop();
-      $(this).next('.custom-file-label').html(fileName || 'Ganti file...');
+    $(document).ready(function () {
+
+        $('.custom-file-input').on('change', function () {
+
+            let fileName = $(this)
+                .val()
+                .split('\\')
+                .pop();
+
+            $(this)
+                .next('.custom-file-label')
+                .html(fileName || 'Ganti file...');
+
+        });
+
     });
-  });
 </script>
+
 @endpush
+
 @endsection

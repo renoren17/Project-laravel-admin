@@ -6,7 +6,6 @@ use App\Models\Film;
 use App\Models\Genre;
 use App\Models\Cast;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class FilmController extends Controller
 {
@@ -34,25 +33,45 @@ class FilmController extends Controller
             'genre_id' => 'required|array',
             'genre_id.*' => 'exists:genres,id',
             'poster' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'trailer_url' => 'nullable|url',
         ]);
 
         $file = $request->file('poster');
-        $fileName = time() . '_' . preg_replace('/\s+/', '_', strtolower($file->getClientOriginalName()));
-        $file->move(public_path('images/posters'), $fileName);
 
-        $film = Film::create([
-            'judul' => $request->judul,
-            'ringkasan' => $request->ringkasan,
-            'tahun' => $request->tahun,
-            'poster' => 'images/posters/' . $fileName,
-        ]);
+        $fileName = time() . '_' .
+            preg_replace(
+                '/\s+/',
+                '_',
+                strtolower($file->getClientOriginalName())
+            );
+
+        $file->move(
+            public_path('images/posters'),
+            $fileName
+        );
+
+        $film = new Film();
+
+        $film->judul = $request->judul;
+        $film->ringkasan = $request->ringkasan;
+        $film->tahun = $request->tahun;
+        $film->poster = 'images/posters/' . $fileName;
+        $film->trailer_url = $request->trailer_url;
+
+        $film->save();
 
         $film->genres()->sync($request->genre_id);
 
         if ($request->filled('cast_id')) {
             $castData = Cast::whereIn('id', $request->cast_id)
                 ->get()
-                ->mapWithKeys(fn($cast) => [$cast->id => ['nama' => $cast->nama]]);
+                ->mapWithKeys(function ($cast) {
+                    return [
+                        $cast->id => [
+                            'nama' => $cast->nama
+                        ]
+                    ];
+                });
 
             $film->cast()->sync($castData);
         }
@@ -64,6 +83,8 @@ class FilmController extends Controller
 
     public function show(Film $film)
     {
+        $film->load('genres', 'cast');
+
         return view('film.show', compact('film'));
     }
 
@@ -79,7 +100,10 @@ class FilmController extends Controller
         $genres = Genre::all();
         $casts = Cast::all();
 
-        return view('film.edit', compact('film', 'genres', 'casts'));
+        return view(
+            'film.edit',
+            compact('film', 'genres', 'casts')
+        );
     }
 
     public function update(Request $request, Film $film)
@@ -91,37 +115,62 @@ class FilmController extends Controller
             'genre_id' => 'required|array',
             'genre_id.*' => 'exists:genres,id',
             'poster' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'trailer_url' => 'nullable|url',
         ]);
 
-        $data = [
-            'judul' => $request->judul,
-            'ringkasan' => $request->ringkasan,
-            'tahun' => $request->tahun,
-        ];
+        $film->judul = $request->judul;
+        $film->ringkasan = $request->ringkasan;
+        $film->tahun = $request->tahun;
+        $film->trailer_url = $request->trailer_url;
 
         if ($request->hasFile('poster')) {
-            if ($film->poster && file_exists(public_path($film->poster))) {
+
+            if (
+                $film->poster &&
+                file_exists(public_path($film->poster))
+            ) {
                 unlink(public_path($film->poster));
             }
 
             $file = $request->file('poster');
-            $fileName = time() . '_' . preg_replace('/\s+/', '_', strtolower($file->getClientOriginalName()));
-            $file->move(public_path('images/posters'), $fileName);
 
-            $data['poster'] = 'images/posters/' . $fileName;
+            $fileName = time() . '_' .
+                preg_replace(
+                    '/\s+/',
+                    '_',
+                    strtolower($file->getClientOriginalName())
+                );
+
+            $file->move(
+                public_path('images/posters'),
+                $fileName
+            );
+
+            $film->poster = 'images/posters/' . $fileName;
         }
 
-        $film->update($data);
+        $film->save();
+
         $film->genres()->sync($request->genre_id);
 
         if ($request->filled('cast_id')) {
+
             $castData = Cast::whereIn('id', $request->cast_id)
                 ->get()
-                ->mapWithKeys(fn($cast) => [$cast->id => ['nama' => $cast->nama]]);
+                ->mapWithKeys(function ($cast) {
+                    return [
+                        $cast->id => [
+                            'nama' => $cast->nama
+                        ]
+                    ];
+                });
 
             $film->cast()->sync($castData);
+
         } else {
+
             $film->cast()->sync([]);
+
         }
 
         return redirect()
@@ -131,8 +180,11 @@ class FilmController extends Controller
 
     public function destroy(Film $film)
     {
-        if ($film->poster && file_exists(public_path($film->poster))) {
-        unlink(public_path($film->poster));
+        if (
+            $film->poster &&
+            file_exists(public_path($film->poster))
+        ) {
+            unlink(public_path($film->poster));
         }
 
         $film->cast()->detach();

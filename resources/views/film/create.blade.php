@@ -64,6 +64,24 @@
           </div>
 
           <div class="form-group">
+    <label for="trailer_url">Trailer YouTube</label>
+    <input
+        name="trailer_url"
+        type="url"
+        class="form-control @error('trailer_url') is-invalid @enderror"
+        id="trailer_url"
+        placeholder="https://www.youtube.com/watch?v=..."
+        value="{{ old('trailer_url') }}"
+    >
+
+    @error('trailer_url')
+        <span class="error invalid-feedback" style="display: inline;">
+            {{ $message }}
+        </span>
+    @enderror
+</div>
+
+          <div class="form-group">
             <label>Cast</label>
             <div class="border rounded p-2 @error('cast_id') is-invalid @enderror" style="max-height: 200px; overflow-y: auto;">
                 @foreach ($casts as $cast)
