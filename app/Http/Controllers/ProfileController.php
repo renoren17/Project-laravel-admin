@@ -12,7 +12,7 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $profiles = Profile::all();
+        $profiles = Profile::with('user.role')->get();
 
         return view('profiles.index', compact('profiles'));
     }

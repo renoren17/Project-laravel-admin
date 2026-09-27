@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Model;
 
 class Profile extends Model
@@ -11,4 +12,9 @@ class Profile extends Model
         'bio',
         'alamat',
     ];
+
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class, 'profile_id');
+    }
 }

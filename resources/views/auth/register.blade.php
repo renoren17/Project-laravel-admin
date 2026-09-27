@@ -9,7 +9,7 @@
     <div class="alert alert-danger py-2 small">{{ $errors->first() }}</div>
 @endif
 
-<form method="POST" action="{{ route('register') }}">
+<form method="POST" action="{{ route('register.store') }}">
     @csrf
     <div class="input-group mb-3">
         <input type="text" name="name" class="form-control" placeholder="Full Name" value="{{ old('name') }}" required autofocus>

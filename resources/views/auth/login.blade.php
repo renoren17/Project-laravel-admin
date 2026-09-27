@@ -5,11 +5,15 @@
 @section('content')
 <p class="panel-title">Sign in to start your session</p>
 
+@if (session('status'))
+    <div class="alert alert-info py-2 small">{{ session('status') }}</div>
+@endif
+
 @if ($errors->any())
     <div class="alert alert-danger py-2 small">{{ $errors->first() }}</div>
 @endif
 
-<form method="POST" action="{{ route('login') }}">
+<form method="POST" action="{{ route('login.authenticate') }}">
     @csrf
     <div class="input-group mb-3">
         <input type="email" name="email" class="form-control" placeholder="Email" value="{{ old('email') }}" required autofocus>

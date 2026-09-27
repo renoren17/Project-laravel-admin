@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\CastController;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\GenreController;
@@ -45,7 +44,7 @@ Route::get('/register', function () {
 
 Route::post('/register', function (Request $request) {
     $data = $request->validate([
-        'name' => ['required', 'string', 'max:255'],
+        'name' => ['required', 'string', 'max:45'],
         'email' => ['required', 'email', 'max:255', 'unique:users,email'],
         'password' => ['required', 'string', 'confirmed', 'min:8'],
         'terms' => ['accepted'],

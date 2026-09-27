@@ -29,9 +29,10 @@
             <thead>
                 <tr>
                     <th width="5%">ID</th>
-                    <th>Umur</th>
+                    <th>Nama</th>
+                    <th>Email</th>
                     <th>Bio</th>
-                    <th>Alamat</th>
+                    <th>Role</th>
                 </tr>
             </thead>
 
@@ -41,15 +42,16 @@
 
                     <tr>
                         <td>{{ $profile->id }}</td>
-                        <td>{{ $profile->umur }}</td>
+                        <td>{{ $profile->user?->name ?? '-' }}</td>
+                        <td>{{ $profile->user?->email ?? '-' }}</td>
                         <td>{{ $profile->bio }}</td>
-                        <td>{{ $profile->alamat }}</td>
+                        <td>{{ $profile->user?->role?->nama ?? '-' }}</td>
                     </tr>
 
                 @empty
 
                     <tr>
-                        <td colspan="4" class="text-center">
+                        <td colspan="5" class="text-center">
                             Belum ada data profile.
                         </td>
                     </tr>
