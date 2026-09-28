@@ -30,6 +30,7 @@ class FilmSeed extends Seeder
                 'tahun' => 2022,
                 'genres' => ['Music', 'Comedy', 'Slice of Life'],
                 'poster' => 'images/posters/Bocchi the Rock!.jpeg',
+                'trailer_url' => 'https://www.youtube.com/watch?v=GDTp7lq2f3Y',
             ],
             [
                 'judul' => 'My Deer Friend Nokotan',
@@ -37,6 +38,7 @@ class FilmSeed extends Seeder
                 'tahun' => 2023,
                 'genres' => ['Comedy', 'Slice of Life'],
                 'poster' => 'images/posters/Shikanoko Nokonoko Koshitantan.jpeg',
+                'trailer_url' => 'https://www.youtube.com/watch?v=VIDEO_ID_NOKOTAN',
             ],
             [
                 'judul' => 'Seihantai na Kimi to Boku',
@@ -44,6 +46,7 @@ class FilmSeed extends Seeder
                 'tahun' => 2026,
                 'genres' => ['Comedy', 'Romance'],
                 'poster' => 'images/posters/1790523125_seihantainokimitoboku.jpg',
+                'trailer_url' => 'https://www.youtube.com/watch?v=VIDEO_ID_SEIHANTAI',
             ],
             [
                 'judul' => 'Danshi Koukousei no Nichijou',
@@ -51,6 +54,7 @@ class FilmSeed extends Seeder
                 'tahun' => 2012,
                 'genres' => ['Comedy', 'Slice of Life'],
                 'poster' => 'images/posters/1790523432_danshikoukouseinonichijou.jpg',
+                'trailer_url' => 'https://www.youtube.com/watch?v=VIDEO_ID_DANSHi',
             ],
         ];
 
@@ -61,8 +65,14 @@ class FilmSeed extends Seeder
                     'ringkasan' => $film['ringkasan'],
                     'tahun' => $film['tahun'],
                     'poster' => $film['poster'],
+                    'trailer_url' => $film['trailer_url'],
                 ]
             );
+
+            // Update trailer jika film sudah ada
+            $newFilm->update([
+                'trailer_url' => $film['trailer_url'],
+            ]);
 
             $genreIds = Genre::whereIn('nama', $film['genres'])->pluck('id');
             $newFilm->genres()->sync($genreIds);
@@ -108,11 +118,17 @@ class FilmSeed extends Seeder
 
         foreach ($movieCastMap as $judul => $castNames) {
             $film = Film::where('judul', $judul)->first();
-            if (!$film) continue;
+
+            if (!$film) {
+                continue;
+            }
 
             foreach ($castNames as $castName) {
                 $castId = Cast::where('nama', $castName)->value('id');
-                if (!$castId) continue;
+
+                if (!$castId) {
+                    continue;
+                }
 
                 DB::table('perans')->updateOrInsert(
                     [
