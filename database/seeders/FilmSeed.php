@@ -69,8 +69,10 @@ class FilmSeed extends Seeder
                 ]
             );
 
-            // Update trailer jika film sudah ada
             $newFilm->update([
+                'ringkasan' => $film['ringkasan'],
+                'tahun' => $film['tahun'],
+                'poster' => $film['poster'],
                 'trailer_url' => $film['trailer_url'],
             ]);
 

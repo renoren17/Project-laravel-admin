@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('ringkasan');
             $table->integer('tahun');
             $table->string('poster', 225);
+            $table->timestamps();
         });
     }
 

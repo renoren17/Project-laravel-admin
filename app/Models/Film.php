@@ -11,6 +11,7 @@ class Film extends Model
         'ringkasan',
         'tahun',
         'poster',
+        'trailer_url',
     ];
 
     public function genres()
@@ -20,6 +21,8 @@ class Film extends Model
 
     public function cast()
     {
-        return $this->belongsToMany(Cast::class, 'perans')->withPivot('nama')->withTimestamps();
+        return $this->belongsToMany(Cast::class, 'perans')
+            ->withPivot('nama')
+            ->withTimestamps();
     }
 }
