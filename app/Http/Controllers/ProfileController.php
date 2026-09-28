@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use App\Models\Profile;
 
 class ProfileController extends Controller
@@ -75,8 +77,42 @@ class ProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Profile $profile): RedirectResponse
     {
-        //
+        if ($profile->user()->exists()) {
+            return back()->withErrors([
+                'profile' => 'Profile tidak dapat dihapus karena masih terhubung ke akun user.',
+            ]);
+        }
+
+        $profile->delete();
+
+        return redirect()->route('profiles.index')
+            ->with('success', 'Profile berhasil dihapus.');
+    }
+
+    public function fire(Profile $profile): RedirectResponse
+    {
+        $user = $profile->user()->with('role')->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'profile' => 'Profile ini tidak terhubung ke akun user.',
+            ]);
+        }
+
+        if (strtolower((string) ($user->role->nama ?? '')) === 'owner') {
+            return back()->withErrors([
+                'profile' => 'Akun Owner tidak dapat dipecat.',
+            ]);
+        }
+
+        DB::transaction(function () use ($user, $profile) {
+            $user->delete();
+            $profile->delete();
+        });
+
+        return redirect()->route('profiles.index')
+            ->with('success', 'Akun user berhasil dipecat.');
     }
 }

@@ -43,6 +43,12 @@
   .or-divider{ text-align:center; color:#8b93a1; font-size:.8rem; margin:.9rem 0; }
   .foot-links{ margin-top:.9rem; }
   .foot-links a{ display:block; color:#7eb6ff; font-size:.82rem; text-decoration:underline; margin-bottom:.35rem; }
+  .admin-invite{ display:flex; align-items:center; gap:.45rem; background:#243d4a; border:1px solid #286274; border-radius:5px; color:#b9dce5; font-size:.8rem; margin-bottom:1.15rem; padding:.65rem .7rem; }
+  .admin-invite i{ color:var(--brand-blue); }
+  .admin-invite a{ color:#79d8e8; font-weight:600; margin-left:auto; white-space:nowrap; }
+  .admin-invite a:hover{ color:#a5edf6; }
+  .auth-note{ color:#9da7b5; font-size:.8rem; line-height:1.45; margin:-.65rem 0 1rem; text-align:center; }
+  .code-input{ text-transform:uppercase; letter-spacing:.08em; }
 </style>
 @stack('css')
 </head>

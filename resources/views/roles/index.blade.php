@@ -6,11 +6,6 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">Data Role</h3>
-        <div class="card-tools">
-            <a href="{{ route('roles.create') }}" class="btn btn-primary btn-sm">
-                <i class="fas fa-plus"></i> Tambah Role
-            </a>
-        </div>
     </div>
 
     <div class="card-body">
@@ -25,7 +20,7 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th width="10%">ID</th>
+                    <th width="10%">No</th>
                     <th>Nama Role</th>
                     <th width="25%">Keterangan</th>
                 </tr>

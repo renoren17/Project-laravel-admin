@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -29,5 +31,19 @@ class RoleController extends Controller
 
         return redirect()->route('roles.index')
             ->with('success', 'Role berhasil ditambahkan.');
+    }
+
+    public function destroy(Role $role): RedirectResponse
+    {
+        if (User::where('role_id', $role->id)->exists()) {
+            return back()->withErrors([
+                'role' => 'Role tidak dapat dihapus karena masih digunakan oleh user.',
+            ]);
+        }
+
+        $role->delete();
+
+        return redirect()->route('roles.index')
+            ->with('success', 'Role berhasil dihapus.');
     }
 }

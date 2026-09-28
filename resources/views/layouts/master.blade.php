@@ -11,6 +11,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- AdminLTE v3 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <style>
+        .owner-menu-label {
+            color: #f4b942;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            margin: 1rem .8rem .35rem;
+            text-transform: uppercase;
+        }
+
+        .owner-menu .nav-link {
+            border-left: 3px solid transparent;
+        }
+
+        .owner-menu .nav-link:hover,
+        .owner-menu .nav-link.active {
+            background: rgba(244, 185, 66, .16);
+            border-left-color: #f4b942;
+            color: #fff;
+        }
+
+        .owner-menu .nav-icon {
+            color: #f4b942;
+        }
+    </style>
     @stack('css')
 </head>
 <body class="hold-transition sidebar-mini">
@@ -88,6 +113,16 @@
                             <p>Roles</p>
                         </a>
                     </li>
+
+                    @can('owner')
+                        <li class="owner-menu-label">Owner Area</li>
+                        <li class="nav-item owner-menu">
+                            <a href="{{ route('owner.admin-codes') }}" class="nav-link {{ request()->routeIs('owner.admin-codes*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-key"></i>
+                                <p>Admin Codes <span class="right badge badge-warning">Owner</span></p>
+                            </a>
+                        </li>
+                    @endcan
 
                     <!-- Menu Logout -->
                     <li class="nav-item">

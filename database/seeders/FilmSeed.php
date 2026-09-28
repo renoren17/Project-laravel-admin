@@ -13,11 +13,37 @@ class FilmSeed extends Seeder
     public function run(): void
     {
         $genres = [
-            ['nama' => 'Comedy'],
-            ['nama' => 'Music'],
-            ['nama' => 'Slice of Life'],
-            ['nama' => 'Romance'],
-        ];
+    ['nama' => 'Action'],
+    ['nama' => 'Adventure'],
+    ['nama' => 'Animation'],
+    ['nama' => 'Comedy'],
+    ['nama' => 'Crime'],
+    ['nama' => 'Documentary'],
+    ['nama' => 'Drama'],
+    ['nama' => 'Family'],
+    ['nama' => 'Fantasy'],
+    ['nama' => 'History'],
+    ['nama' => 'Horror'],
+    ['nama' => 'Music'],
+    ['nama' => 'Mystery'],
+    ['nama' => 'Romance'],
+    ['nama' => 'Science Fiction'],
+    ['nama' => 'Thriller'],
+    ['nama' => 'War'],
+    ['nama' => 'Western'],
+    ['nama' => 'Biography'],
+    ['nama' => 'Musical'],
+    ['nama' => 'Sport'],
+    ['nama' => 'Superhero'],
+    ['nama' => 'Psychological'],
+    ['nama' => 'Slice of Life'],
+    ['nama' => 'Coming of Age'],
+    ['nama' => 'Noir'],
+    ['nama' => 'Disaster'],
+    ['nama' => 'Martial Arts'],
+    ['nama' => 'Supernatural'],
+    ['nama' => 'Survival'],
+];
 
         foreach ($genres as $genreData) {
             Genre::firstOrCreate(['nama' => $genreData['nama']]);

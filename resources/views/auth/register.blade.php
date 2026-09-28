@@ -5,6 +5,12 @@
 @section('content')
 <p class="panel-title">Register a new membership</p>
 
+<div class="admin-invite">
+    <i class="fas fa-shield-alt"></i>
+    <span>Punya kode admin dari Owner?</span>
+    <a href="{{ route('register.admin') }}">Daftar sebagai Admin</a>
+</div>
+
 @if ($errors->any())
     <div class="alert alert-danger py-2 small">{{ $errors->first() }}</div>
 @endif
